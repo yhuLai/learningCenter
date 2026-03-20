@@ -1,0 +1,303 @@
+/* ============================================
+   Soking Design Tokens
+   使用方式：在專案的 global CSS 最頂層 import
+   ============================================ */
+
+:root {
+
+  /* ------------------------------------------
+     Colors — Primary
+  ------------------------------------------ */
+  --color-navy:          #1A1A2E;   /* 導覽列、標頭背景、filter 選中 */
+  --color-purple:        #4A3FD6;   /* CTA 按鈕、連結、強調色 */
+  --color-purple-hover:  #3D34B8;   /* Purple hover 狀態 */
+  --color-purple-light:  #6C63FF;   /* 次要強調 */
+
+  /* ------------------------------------------
+     Colors — Functional Tints
+  ------------------------------------------ */
+  --color-purple-tint:   #EEF0FD;   /* 標籤背景、強調填色 */
+  --color-green-tint:    #E4F7EE;   /* 成功、正面狀態 */
+  --color-yellow-tint:   #FEF9E7;   /* 工作坊標籤 */
+  --color-coral-tint:    #FEF0ED;   /* 困境/問題欄位 */
+
+  /* ------------------------------------------
+     Colors — Text
+  ------------------------------------------ */
+  --color-text-primary:    #1A1A2E;
+  --color-text-secondary:  #6B6B80;
+  --color-text-tertiary:   #9999AA;
+  --color-text-purple:     #4A3FD6;
+  --color-text-green:      #0F6E56;
+  --color-text-yellow:     #8B7320;
+  --color-text-coral:      #C04828;
+  --color-text-purple-dark:#3A30A6;
+
+  /* ------------------------------------------
+     Colors — Background
+  ------------------------------------------ */
+  --color-bg-page:       #F7F7F8;
+  --color-bg-card:       #FFFFFF;
+  --color-bg-nav:        #FFFFFF;
+
+  /* ------------------------------------------
+     Colors — Border
+  ------------------------------------------ */
+  --color-border:        #E5E5EE;
+  --color-border-medium: #C5C5D8;
+
+  /* ------------------------------------------
+     Colors — Legend Dots
+  ------------------------------------------ */
+  --color-dot-online:    #4A3FD6;   /* 線上課程 */
+  --color-dot-workshop:  #F0A500;   /* 工作坊 */
+  --color-dot-uxr:       #1D9E75;   /* UXR 營 */
+
+  /* ------------------------------------------
+     Typography
+  ------------------------------------------ */
+  --font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+
+  --font-size-page-title:    36px;
+  --font-size-section-title: 28px;
+  --font-size-card-title:    18px;
+  --font-size-price:         30px;
+  --font-size-body:          15px;
+  --font-size-small:         13px;
+  --font-size-caption:       12px;
+  --font-size-label:         11px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  /* 禁止使用 600 或 700 */
+
+  --line-height-heading: 1.3;
+  --line-height-body:    1.7;
+
+  /* ------------------------------------------
+     Spacing（基礎單位 4px）
+  ------------------------------------------ */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-16: 64px;
+
+  /* ------------------------------------------
+     Border Radius
+  ------------------------------------------ */
+  --radius-sm:   6px;    /* 小標籤、chip */
+  --radius-md:   8px;    /* 按鈕、輸入框 */
+  --radius-lg:   12px;   /* 卡片 */
+  --radius-xl:   16px;   /* 大型容器 */
+  --radius-full: 999px;  /* 膠囊按鈕、圓點 */
+
+  /* ------------------------------------------
+     Border Width
+  ------------------------------------------ */
+  --border-default:  0.5px solid var(--color-border);
+  --border-medium:   1.5px solid var(--color-border-medium);
+  --border-featured: 2px solid var(--color-purple);   /* Featured 卡片專用 */
+
+  /* ------------------------------------------
+     Layout
+  ------------------------------------------ */
+  --max-width:        1280px;
+  --page-padding-x:   40px;
+  --section-gap:      64px;
+  --card-gap:         24px;
+  --nav-height:       64px;
+}
+
+/* ------------------------------------------
+   Mobile overrides
+------------------------------------------ */
+@media (max-width: 768px) {
+  :root {
+    --page-padding-x: 20px;
+    --font-size-page-title: 26px;
+    --section-gap: 40px;
+    --card-gap: 16px;
+  }
+}
+
+
+/* ============================================
+   Base Reset & Global Styles
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ------------------------------------------
+   Utility Classes
+------------------------------------------ */
+
+/* Buttons */
+.btn-primary {
+  background: var(--color-purple);
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn-primary:hover {
+  background: var(--color-purple-hover);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: var(--border-medium);
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn-secondary:hover {
+  background: var(--color-bg-page);
+}
+
+.btn-filter-active {
+  background: var(--color-navy);
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+  cursor: pointer;
+}
+
+.btn-filter-inactive {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: var(--border-medium);
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn-filter-inactive:hover {
+  background: var(--color-bg-page);
+}
+
+/* Cards */
+.card {
+  background: var(--color-bg-card);
+  border: var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.card-featured {
+  background: var(--color-bg-card);
+  border: var(--border-featured);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  position: relative;
+}
+
+/* Tags */
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+}
+
+.tag-status {
+  background: var(--color-purple-tint);
+  color: var(--color-text-purple);
+}
+
+.tag-featured {
+  background: var(--color-purple);
+  color: #FFFFFF;
+}
+
+.tag-stage {
+  background: var(--color-yellow-tint);
+  color: var(--color-text-yellow);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+}
+
+.chip-online {
+  background: var(--color-green-tint);
+  color: var(--color-text-green);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: var(--font-size-caption);
+}
+
+.chip-workshop {
+  background: var(--color-yellow-tint);
+  color: var(--color-text-yellow);
+  border: 1px solid #F5E6C8;
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: var(--font-size-caption);
+}
+
+/* Legend Dot */
+.legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+}
+.legend-dot--online   { background: var(--color-dot-online); }
+.legend-dot--workshop { background: var(--color-dot-workshop); }
+.legend-dot--uxr      { background: var(--color-dot-uxr); }
+
+/* Section Header (timeline) */
+.section-header-dark {
+  background: var(--color-navy);
+  color: #FFFFFF;
+  padding: 10px 16px;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Divider */
+.divider {
+  border: none;
+  border-top: var(--border-default);
+  margin: var(--space-8) 0;
+}
+
+/* Layout wrapper */
+.page-wrapper {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--page-padding-x);
+}
