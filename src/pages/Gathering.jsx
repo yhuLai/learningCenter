@@ -37,6 +37,7 @@ const statusTag = {
   fontSize: '12px',
   fontWeight: '500',
   display: 'inline-block',
+  alignSelf: 'flex-start',
 }
 
 export default function Gathering() {
@@ -46,7 +47,7 @@ export default function Gathering() {
 
         {/* 近期的活動 */}
         <section style={{ marginBottom: '40px' }}>
-          <p style={{ fontSize: '13px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }}>
+          <p style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }}>
             近期的活動
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -100,7 +101,7 @@ export default function Gathering() {
 
         {/* 其他活動 */}
         <section>
-          <p style={{ fontSize: '13px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }}>
+          <p style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }}>
             其他活動
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>

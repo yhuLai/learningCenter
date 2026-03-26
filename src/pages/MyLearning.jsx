@@ -20,7 +20,7 @@ const card = {
 }
 
 const sectionLabel = {
-  fontSize: '13px',
+  fontSize: '20px',
   fontWeight: '500',
   color: '#1A1A2E',
   margin: '0 0 16px',

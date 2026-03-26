@@ -92,16 +92,85 @@ export default function BootCamp() {
         {/* UXR 認證等級 */}
         <section style={{ marginBottom: '40px' }}>
           <p style={sectionLabel}>UXR 認證等級</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
-            {certLevels.map(level => (
-              <div key={level.stage} style={card}>
-                <span style={{ display: 'inline-block', background: level.bg, color: level.color, borderRadius: '6px', padding: '2px 8px', fontSize: '12px', fontWeight: '500', marginBottom: '8px' }}>
-                  {level.stage}
-                </span>
-                <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 4px' }}>{level.name}</p>
-                <p style={{ fontSize: '13px', color: '#6B6B80', margin: 0 }}>{level.desc}</p>
+          <div style={{
+            ...card,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '32px',
+            padding: '24px 32px',
+          }}>
+            {/* 左側：等級資訊 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              {/* 等級 icon */}
+              <div style={{
+                width: '56px', height: '56px',
+                background: '#EEF0FD',
+                borderRadius: '12px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <path d="M14 3L17.5 10.5L26 11.5L20 17.5L21.5 26L14 22L6.5 26L8 17.5L2 11.5L10.5 10.5L14 3Z"
+                    fill="#4A3FD6" fillOpacity="0.15" stroke="#4A3FD6" strokeWidth="1.5"
+                    strokeLinejoin="round" />
+                </svg>
               </div>
-            ))}
+              {/* 文字 */}
+              <div>
+                <p style={{ fontSize: '11px', color: '#9999AA', fontWeight: '500', margin: '0 0 4px', letterSpacing: '0.5px' }}>
+                  目前等級
+                </p>
+                <p style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 4px' }}>
+                  初階市場研究員認證
+                </p>
+                <p style={{ fontSize: '13px', color: '#6B6B80', margin: 0 }}>
+                  具備基礎市場研究的規劃與執行能力
+                </p>
+              </div>
+            </div>
+
+            {/* 右側：R1–R4 進度圈 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0', flexShrink: 0 }}>
+              {['R1', 'R2', 'R3', 'R4'].map((stage, idx) => {
+                const lit = idx < 3   // R1 R2 R3 點亮
+                return (
+                  <div key={stage} style={{ display: 'flex', alignItems: 'center' }}>
+                    {/* 連線（第一個左邊不畫） */}
+                    {idx > 0 && (
+                      <div style={{
+                        width: '40px', height: '2px',
+                        background: idx < 3 ? '#4A3FD6' : '#E5E5EE',
+                      }} />
+                    )}
+                    {/* 圓圈 */}
+                    <div style={{
+                      width: '52px', height: '52px',
+                      borderRadius: '999px',
+                      background: lit ? '#4A3FD6' : '#F7F7F8',
+                      border: lit ? 'none' : '0.5px solid #E5E5EE',
+                      display: 'flex', flexDirection: 'column',
+                      alignItems: 'center', justifyContent: 'center',
+                      gap: '1px',
+                    }}>
+                      <span style={{
+                        fontSize: '13px', fontWeight: '500',
+                        color: lit ? '#FFFFFF' : '#9999AA',
+                        lineHeight: 1,
+                      }}>
+                        {stage}
+                      </span>
+                      {lit && (
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.5 6L5 8.5L9.5 4" stroke="white" strokeWidth="1.5"
+                            strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </section>
 
@@ -209,38 +278,69 @@ export default function BootCamp() {
             </div>
 
             {/* 右側活動列表 */}
-            <div style={{ background: '#FFFFFF', border: '0.5px solid #E5E5EE', borderRadius: '12px', overflow: 'hidden' }}>
-              <div style={{ background: '#1A1A2E', padding: '14px 20px' }}>
+            <div>
+              {/* 月份標題 */}
+              <div style={{
+                background: '#1A1A2E',
+                borderRadius: '12px',
+                padding: '14px 20px',
+                marginBottom: '12px',
+              }}>
                 <span style={{ fontSize: '14px', fontWeight: '500', color: '#FFFFFF' }}>{year} 年 {month} 月</span>
               </div>
+
               {monthEvents.length === 0 ? (
-                <p style={{ padding: '32px', textAlign: 'center', color: '#9999AA', fontSize: '14px' }}>本月暫無活動</p>
+                <div style={{
+                  background: '#FFFFFF',
+                  border: '0.5px solid #E5E5EE',
+                  borderRadius: '12px',
+                  padding: '32px',
+                  textAlign: 'center',
+                }}>
+                  <p style={{ color: '#9999AA', fontSize: '14px', margin: 0 }}>本月暫無活動</p>
+                </div>
               ) : (
-                monthEvents.map((event, idx) => (
-                  <div key={event.id} style={{
-                    display: 'grid',
-                    gridTemplateColumns: '72px 1fr',
-                    borderBottom: idx < monthEvents.length - 1 ? '0.5px solid #E5E5EE' : 'none',
-                  }}>
-                    {/* 日期欄 */}
-                    <div style={{ padding: '20px 12px', borderRight: '0.5px solid #E5E5EE', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
-                      <span style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E' }}>{event.month}/{event.day}</span>
-                      <span style={{ fontSize: '12px', color: '#6B6B80' }}>{event.weekday}</span>
-                    </div>
-                    {/* 活動內容 */}
-                    <div style={{ padding: '16px 20px', borderLeft: `3px solid ${typeColor[event.type]}`, background: typeBg[event.type] }}>
-                      <span style={{ display: 'inline-block', background: '#E4F7EE', color: '#0F6E56', borderRadius: '999px', padding: '2px 10px', fontSize: '12px', fontWeight: '500', marginBottom: '8px' }}>
-                        {event.status}
-                      </span>
-                      <p style={{ fontSize: '14px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 6px', lineHeight: '1.5' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {monthEvents.map(event => (
+                    <div key={event.id} style={{
+                      background: typeBg[event.type],
+                      border: `0.5px solid ${typeColor[event.type]}40`,
+                      borderLeft: `3px solid ${typeColor[event.type]}`,
+                      borderRadius: '12px',
+                      padding: '16px 20px',
+                    }}>
+                      {/* 日期 + 狀態 */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                        <span style={{ fontSize: '13px', color: '#6B6B80' }}>
+                          {event.month}/{event.day} {event.weekday}
+                        </span>
+                        <span style={{
+                          background: '#E4F7EE',
+                          color: '#0F6E56',
+                          borderRadius: '999px',
+                          padding: '2px 10px',
+                          fontSize: '12px',
+                          fontWeight: '500',
+                        }}>
+                          {event.status}
+                        </span>
+                      </div>
+
+                      {/* 標題 */}
+                      <p style={{ fontSize: '14px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 8px', lineHeight: '1.5' }}>
                         {event.title}
                       </p>
-                      <p style={{ fontSize: '13px', color: '#6B6B80', margin: '0 0 4px' }}>{event.time}</p>
-                      <p style={{ fontSize: '13px', color: '#6B6B80', margin: '0 0 8px' }}>📍 {event.location}</p>
+
+                      {/* 時間 & 地點 */}
+                      <div style={{ display: 'flex', gap: '16px', marginBottom: '10px' }}>
+                        <span style={{ fontSize: '13px', color: '#6B6B80' }}>{event.time}</span>
+                        <span style={{ fontSize: '13px', color: '#6B6B80' }}>📍 {event.location}</span>
+                      </div>
+
                       <Link to="#" style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}>課程詳情 ↗</Link>
                     </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </div>
 
@@ -300,7 +400,7 @@ function PlanCard({ plan }) {
 
       {plan.featured ? (
         <button
-          style={{ ...primaryBtn, width: '100%', marginBottom: '8px' }}
+          style={{ ...primaryBtn, width: '100%' }}
           onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
           onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
         >
@@ -308,26 +408,20 @@ function PlanCard({ plan }) {
         </button>
       ) : (
         <button
-          style={{ ...outlineBtn, width: '100%', marginBottom: '8px' }}
+          style={{ ...outlineBtn, width: '100%' }}
           onMouseEnter={e => { e.currentTarget.style.background = '#F7F7F8' }}
           onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF' }}
         >
           查看詳情
         </button>
       )}
-      <Link
-        to={`/courses/${plan.stage.toLowerCase()}`}
-        style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none', textAlign: 'center', display: 'block' }}
-      >
-        查看課程詳情 →
-      </Link>
     </div>
   )
 }
 
 // ─── shared styles ───────────────────────────────────────────────────────────
 
-const sectionLabel = { fontSize: '13px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }
+const sectionLabel = { fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }
 
 const card = {
   background: '#FFFFFF',

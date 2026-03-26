@@ -54,7 +54,8 @@
 | 層級 | 大小 | 字重 | 用途 |
 |------|------|------|------|
 | Page Title | `36px` | `500` | 頁面主標題 |
-| Section Title | `28px` | `500` | 區塊標題 |
+| Section Title | `28px` | `500` | 區塊大標題（如學習營方案heading） |
+| Content Section Label | `20px` | `500` | 頁面內各 section 標題（如近期的直播、免費課程、工作坊介紹） |
 | Card Title | `18px` | `500` | 卡片主標題 |
 | Price | `28–32px` | `500` | 定價數字 |
 | Body | `15–16px` | `400` | 內文 |

@@ -27,6 +27,15 @@ const paidTag = {
   fontWeight: '500',
 }
 
+const typeTag = {
+  background: '#F7F7F8',
+  color: '#6B6B80',
+  borderRadius: '6px',
+  padding: '2px 8px',
+  fontSize: '12px',
+  fontWeight: '500',
+}
+
 /**
  * CourseCard — 共用課程卡片元件
  *
@@ -48,6 +57,7 @@ export default function CourseCard({ course }) {
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
+      height: '100%',
     }}>
       {/* 縮圖 */}
       <div style={{
@@ -66,20 +76,33 @@ export default function CourseCard({ course }) {
       <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
         {/* Tags */}
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-          <span style={stageTag}>{course.stage}</span>
-          {course.free
-            ? <span style={freeTag}>免費</span>
-            : <span style={paidTag}>付費</span>
+          {course.type
+            ? <span style={typeTag}>{course.type}</span>
+            : <>
+                <span style={stageTag}>{course.stage}</span>
+                {course.free
+                  ? <span style={freeTag}>免費</span>
+                  : <span style={paidTag}>付費</span>
+                }
+              </>
           }
         </div>
 
         {/* 標題 */}
-        <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
+        <p style={{
+          fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: 0,
+          overflow: 'hidden', display: '-webkit-box',
+          WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+        }}>
           {course.title}
         </p>
 
         {/* 描述 */}
-        <p style={{ fontSize: '13px', color: '#6B6B80', margin: 0, lineHeight: '1.6' }}>
+        <p style={{
+          fontSize: '13px', color: '#6B6B80', margin: 0, lineHeight: '1.6',
+          overflow: 'hidden', display: '-webkit-box',
+          WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+        }}>
           {course.desc}
         </p>
 
