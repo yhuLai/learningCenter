@@ -75,18 +75,22 @@ export default function CourseCard({ course }) {
       {/* 內容 */}
       <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
         {/* Tags */}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-          {course.type
-            ? <span style={typeTag}>{course.type}</span>
-            : <>
-                <span style={stageTag}>{course.stage}</span>
-                {course.free
-                  ? <span style={freeTag}>免費</span>
-                  : <span style={paidTag}>付費</span>
-                }
-              </>
-          }
-        </div>
+        {!course.hideTags && (
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            {course.customTag !== undefined
+              ? course.customTag && <span style={typeTag}>{course.customTag}</span>
+              : course.type
+                ? <span style={typeTag}>{course.type}</span>
+                : <>
+                    <span style={stageTag}>{course.stage}</span>
+                    {course.free
+                      ? <span style={freeTag}>免費</span>
+                      : <span style={paidTag}>付費</span>
+                    }
+                  </>
+            }
+          </div>
+        )}
 
         {/* 標題 */}
         <p style={{

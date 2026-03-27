@@ -23,10 +23,10 @@ const upcomingGatherings = [
 ]
 
 const gatherings = [
-  { id: 1, title: 'UXR 職涯交流小聚',     stage: 'R1', free: true,  desc: '與業界研究員面對面交流，探索 UXR 職涯發展方向。' },
-  { id: 2, title: '研究方法讀書會',        stage: 'R2', free: true,  desc: '每月一本研究經典，共同討論與實務應用。' },
-  { id: 3, title: '作品集 Review 小聚',   stage: 'R2', free: false, price: 500, desc: '帶著你的作品集，獲得資深研究員的直接回饋。' },
-  { id: 4, title: 'UXR x PM 跨域對談',   stage: 'R3', free: false, price: 300, desc: '研究員與 PM 的視角碰撞，探討協作中的挑戰與默契。' },
+  { id: 1, title: 'UXR 職涯交流小聚',     free: true,  hideTags: true, desc: '與業界研究員面對面交流，探索 UXR 職涯發展方向。' },
+  { id: 2, title: '研究方法讀書會',        free: true,  customTag: '讀書會', desc: '每月一本研究經典，共同討論與實務應用。' },
+  { id: 3, title: '作品集 Review 小聚',   free: false, price: 500, hideTags: true, desc: '帶著你的作品集，獲得資深研究員的直接回饋。' },
+  { id: 4, title: 'UXR x PM 跨域對談',   free: false, price: 300, hideTags: true, desc: '研究員與 PM 的視角碰撞，探討協作中的挑戰與默契。' },
 ]
 
 const statusTag = {

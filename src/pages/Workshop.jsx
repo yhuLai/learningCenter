@@ -107,7 +107,7 @@ export default function Workshop() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
             {workshops.map(ws => (
-              <CourseCard key={ws.id} course={{ ...ws, ctaLabel: '查看工作坊' }} />
+              <CourseCard key={ws.id} course={{ ...ws, ctaLabel: '查看工作坊', hideTags: true }} />
             ))}
           </div>
         </section>

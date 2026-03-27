@@ -3,13 +3,13 @@ import Layout from '../components/layout/Layout'
 
 // 暫用 mock 資料，之後串接 Supabase
 const myCourses = [
-  { id: 1, title: 'UXR 基礎研究方法', stage: 'R1', progress: 60, type: '影片課程' },
-  { id: 2, title: '使用者訪談技巧進階', stage: 'R2', progress: 30, type: '影片課程' },
+  { id: 1, title: 'UXR 基礎研究方法', stage: 'R1', progress: 60, type: '線上課程' },
+  { id: 2, title: 'UXR 研究實戰營', stage: 'R1', progress: 30, type: '實戰營' },
 ]
 
 const recommendedCourses = [
-  { id: 3, title: '問卷設計與分析', stage: 'R2', type: '影片課程' },
-  { id: 4, title: 'Usability Testing 實戰', stage: 'R3', type: '影片課程' },
+  { id: 3, title: '問卷設計與分析', type: '線上課程' },
+  { id: 4, title: 'Usability Testing 實戰', type: '實戰營' },
 ]
 
 const card = {
@@ -44,11 +44,29 @@ export default function MyLearning() {
         <p style={{ ...sectionLabel, marginBottom: '12px' }}>個人檔案</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
           <div style={card}>
-            <p style={{ fontSize: '13px', color: '#6B6B80', margin: '0 0 8px' }}>學習領域</p>
-            <p style={{ fontSize: '15px', color: '#9999AA', margin: 0 }}>尚未設定</p>
+            <p style={{ ...sectionLabel, marginBottom: '12px' }}>學習領域</p>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {['服務設計', 'UX 研究'].map(label => (
+                <span key={label} style={{
+                  background: '#EEF0FD',
+                  color: '#4A3FD6',
+                  borderRadius: '6px',
+                  padding: '4px 12px',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                }}>
+                  {label}
+                </span>
+              ))}
+            </div>
           </div>
           <div style={card}>
-            <p style={{ fontSize: '13px', color: '#6B6B80', margin: '0 0 8px' }}>學習 OKR</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <p style={{ ...sectionLabel, margin: 0 }}>學習 OKR</p>
+              <Link to="/okr-setup" style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}>
+                設定學習OKR
+              </Link>
+            </div>
             <p style={{ fontSize: '15px', color: '#9999AA', margin: 0 }}>尚未設定</p>
           </div>
         </div>
@@ -80,21 +98,37 @@ export default function MyLearning() {
                 to="/online-courses"
                 style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}
               >
-                查看詳情 →
+                查看詳情
               </Link>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {recommendedCourses.map(course => (
                 <div key={course.id} style={{
-                  padding: '12px 14px',
                   border: '0.5px solid #E5E5EE',
                   borderRadius: '8px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  alignItems: 'stretch',
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                    <span style={stageTag}>{course.stage}</span>
+                  {/* 左側封面圖佔位 */}
+                  <div style={{
+                    width: '96px',
+                    flexShrink: 0,
+                    background: '#F7F7F8',
+                    borderRight: '0.5px solid #E5E5EE',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <span style={{ fontSize: '11px', color: '#9999AA' }}>封面圖片</span>
+                  </div>
+                  {/* 右側：標題 + 課程類型 */}
+                  <div style={{ flex: 1, padding: '12px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }}>
+                    <p style={{ fontSize: '14px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
+                      {course.title}
+                    </p>
                     <span style={{ fontSize: '12px', color: '#9999AA' }}>{course.type}</span>
                   </div>
-                  <p style={{ fontSize: '14px', color: '#1A1A2E', margin: 0 }}>{course.title}</p>
                 </div>
               ))}
             </div>
@@ -116,7 +150,9 @@ export default function MyLearning() {
               }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                    <span style={stageTag}>{course.stage}</span>
+                    {course.type === '實戰營' && (
+                      <span style={stageTag}>{course.stage}</span>
+                    )}
                     <span style={{ fontSize: '12px', color: '#9999AA' }}>{course.type}</span>
                   </div>
                   <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 10px' }}>
