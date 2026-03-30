@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
 import Welcome from './pages/Welcome'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -13,9 +14,11 @@ import Payment from './pages/Payment'
 import VideoPlayer from './pages/VideoPlayer'
 import OKRSetup from './pages/OKRSetup'
 import OKRResult from './pages/OKRResult'
+import UXToolbox from './pages/UXToolbox'
 
 function App() {
   return (
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
         {/* 公開頁面 */}
@@ -35,11 +38,13 @@ function App() {
         <Route path="/workshop" element={<Workshop />} />
         <Route path="/gathering" element={<Gathering />} />
         <Route path="/video/:id" element={<VideoPlayer />} />
+        <Route path="/ux-toolbox" element={<UXToolbox />} />
 
         {/* 其他路由導向首頁 */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   )
 }
 

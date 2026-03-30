@@ -1,14 +1,30 @@
-import { NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import { supabase } from '../../lib/supabase'
 
-const navItems = [
-  { label: '我的學習', path: '/my-learning' },
+const baseNavItems = [
   { label: '線上課程', path: '/online-courses' },
   { label: '學習營',   path: '/bootcamp' },
   { label: '工作坊',   path: '/workshop' },
   { label: '小聚活動', path: '/gathering' },
+  { label: 'UX工具箱', path: '/ux-toolbox' },
 ]
 
 export default function Sidebar() {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const [settingsOpen, setSettingsOpen] = useState(false)
+
+  const firstItem = { label: '我的學習中心', path: user ? '/my-learning' : '/' }
+  const navItems = [firstItem, ...baseNavItems]
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setSettingsOpen(false)
+    navigate('/')
+  }
+
   return (
     <aside style={{
       width: '200px',
@@ -65,21 +81,91 @@ export default function Sidebar() {
       </nav>
 
       {/* Settings */}
-      <div style={{ borderTop: '0.5px solid #E5E5EE', paddingTop: '16px' }}>
-        <NavLink
-          to="/settings"
-          style={({ isActive }) => ({
+      <div style={{ borderTop: '0.5px solid #E5E5EE', paddingTop: '16px', position: 'relative' }}>
+        <button
+          onClick={() => setSettingsOpen(o => !o)}
+          style={{
             display: 'block',
+            width: '100%',
+            textAlign: 'left',
             padding: '10px 20px',
             fontSize: '14px',
-            fontWeight: isActive ? '500' : '400',
-            color: isActive ? '#1A1A2E' : '#6B6B80',
-            textDecoration: 'none',
-            borderLeft: isActive ? '2px solid #4A3FD6' : '2px solid transparent',
-          })}
+            fontWeight: '400',
+            color: '#6B6B80',
+            background: 'transparent',
+            border: 'none',
+            borderLeft: '2px solid transparent',
+            cursor: 'pointer',
+            fontFamily: "'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
+          }}
         >
           設定
-        </NavLink>
+        </button>
+
+        {/* Dropdown */}
+        {settingsOpen && (
+          <>
+            {/* 點擊外部關閉 */}
+            <div
+              onClick={() => setSettingsOpen(false)}
+              style={{ position: 'fixed', inset: 0, zIndex: 10 }}
+            />
+            <div style={{
+              position: 'absolute',
+              bottom: '100%',
+              left: '16px',
+              right: '16px',
+              background: '#FFFFFF',
+              border: '0.5px solid #E5E5EE',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              zIndex: 20,
+              marginBottom: '4px',
+            }}>
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    textAlign: 'left',
+                    padding: '10px 16px',
+                    fontSize: '14px',
+                    color: '#C04828',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: "'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#FFF5F3'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >
+                  登出
+                </button>
+              ) : (
+                <button
+                  onClick={() => { navigate('/login'); setSettingsOpen(false) }}
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    textAlign: 'left',
+                    padding: '10px 16px',
+                    fontSize: '14px',
+                    color: '#4A3FD6',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: "'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#F7F7F8'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >
+                  登入
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </aside>
   )
