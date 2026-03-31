@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../components/layout/Layout'
 
@@ -5,7 +6,11 @@ import Layout from '../components/layout/Layout'
 const myCourses = [
   { id: 1, title: 'UXR 基礎研究方法', stage: 'R1', progress: 60, type: '線上課程' },
   { id: 2, title: 'UXR 研究實戰營', stage: 'R1', progress: 30, type: '實戰營' },
+  { id: 3, title: 'UX 設計思考工作坊', stage: 'R2', progress: 80, type: '工作坊' },
+  { id: 4, title: 'UX 讀書會 Q1', stage: '', progress: 50, type: '小聚活動' },
 ]
+
+const COURSE_FILTER_TABS = ['全部', '線上課程', '實戰營', '工作坊', '小聚活動']
 
 const recommendedCourses = [
   { id: 3, title: '問卷設計與分析', type: '線上課程' },
@@ -36,6 +41,11 @@ const stageTag = {
 }
 
 export default function MyLearning() {
+  const [courseFilter, setCourseFilter] = useState('全部')
+  const filteredCourses = courseFilter === '全部'
+    ? myCourses
+    : myCourses.filter(c => c.type === courseFilter)
+
   return (
     <Layout>
       <div style={{ maxWidth: '960px', margin: '0 auto' }}>
@@ -138,8 +148,36 @@ export default function MyLearning() {
         {/* 我的課程 */}
         <div style={card}>
           <p style={sectionLabel}>我的課程</p>
+
+          {/* 類型篩選 tabs */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+            {COURSE_FILTER_TABS.map(tab => {
+              const isActive = courseFilter === tab
+              return (
+                <button
+                  key={tab}
+                  onClick={() => setCourseFilter(tab)}
+                  style={{
+                    padding: '5px 14px',
+                    fontSize: '13px',
+                    fontWeight: isActive ? '500' : '400',
+                    color: isActive ? '#4A3FD6' : '#6B6B80',
+                    background: isActive ? '#EEF0FD' : 'transparent',
+                    border: `0.5px solid ${isActive ? '#4A3FD6' : '#E5E5EE'}`,
+                    borderRadius: '999px',
+                    cursor: 'pointer',
+                    fontFamily: "'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  {tab}
+                </button>
+              )
+            })}
+          </div>
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {myCourses.map(course => (
+            {filteredCourses.map(course => (
               <div key={course.id} style={{
                 display: 'flex',
                 alignItems: 'center',
