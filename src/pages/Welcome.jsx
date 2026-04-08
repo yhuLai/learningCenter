@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom'
-import Layout from '../components/layout/Layout'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const ctaItems = [
   { label: '領取\n免費課程',   path: '/online-courses' },
@@ -9,15 +9,26 @@ const ctaItems = [
 
 export default function Welcome() {
   const navigate = useNavigate()
+  const { user } = useAuth()
+
+  // 載入中（user === undefined）暫不渲染
+  if (user === undefined) return null
+
+  // 已登入 → 直接進我的學習中心
+  if (user) return <Navigate to="/my-learning" replace />
 
   return (
-    <Layout>
+    <div style={{
+      display: 'flex',
+      minHeight: '100vh',
+      background: '#F7F7F8',
+    }}>
       <div style={{
+        flex: 1,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: 'calc(100vh - 80px)',
         gap: '20px',
       }}>
         <h1 style={{
@@ -83,6 +94,6 @@ export default function Welcome() {
           ))}
         </div>
       </div>
-    </Layout>
+    </div>
   )
 }

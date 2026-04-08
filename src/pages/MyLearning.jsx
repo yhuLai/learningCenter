@@ -52,6 +52,83 @@ export default function MyLearning() {
 
         {/* 個人檔案 */}
         <p style={{ ...sectionLabel, marginBottom: '12px' }}>個人檔案</p>
+
+        {/* UXR 認證等級 */}
+        <div style={{ ...card, marginBottom: '16px', padding: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <p style={{ ...sectionLabel, margin: 0 }}>UXR 認證等級</p>
+            <Link to="/bootcamp#plans" style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}>
+              提升我的等級
+            </Link>
+          </div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '32px',
+          }}>
+            {/* 左側：等級資訊 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              <div style={{
+                width: '56px', height: '56px',
+                background: '#EEF0FD',
+                borderRadius: '12px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <path d="M14 3L17.5 10.5L26 11.5L20 17.5L21.5 26L14 22L6.5 26L8 17.5L2 11.5L10.5 10.5L14 3Z"
+                    fill="#4A3FD6" fillOpacity="0.15" stroke="#4A3FD6" strokeWidth="1.5"
+                    strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div>
+                <p style={{ fontSize: '11px', color: '#9999AA', fontWeight: '500', margin: '0 0 4px', letterSpacing: '0.5px' }}>
+                  目前等級
+                </p>
+                <p style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 4px' }}>
+                  初階市場研究員認證
+                </p>
+                <p style={{ fontSize: '13px', color: '#6B6B80', margin: 0 }}>
+                  具備基礎市場研究的規劃與執行能力
+                </p>
+              </div>
+            </div>
+
+            {/* 右側：R1–R4 進度圈 */}
+            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              {['R1', 'R2', 'R3', 'R4'].map((stage, idx) => {
+                const lit = idx < 3
+                return (
+                  <div key={stage} style={{ display: 'flex', alignItems: 'center' }}>
+                    {idx > 0 && (
+                      <div style={{ width: '40px', height: '2px', background: idx < 3 ? '#4A3FD6' : '#E5E5EE' }} />
+                    )}
+                    <div style={{
+                      width: '52px', height: '52px',
+                      borderRadius: '999px',
+                      background: lit ? '#4A3FD6' : '#F7F7F8',
+                      border: lit ? 'none' : '0.5px solid #E5E5EE',
+                      display: 'flex', flexDirection: 'column',
+                      alignItems: 'center', justifyContent: 'center',
+                      gap: '1px',
+                    }}>
+                      <span style={{ fontSize: '13px', fontWeight: '500', color: lit ? '#FFFFFF' : '#9999AA', lineHeight: 1 }}>
+                        {stage}
+                      </span>
+                      {lit && (
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.5 6L5 8.5L9.5 4" stroke="white" strokeWidth="1.5"
+                            strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
           <div style={card}>
             <p style={{ ...sectionLabel, marginBottom: '12px' }}>學習領域</p>
