@@ -4,13 +4,13 @@ import Layout from '../components/layout/Layout'
 
 // 暫用 mock 資料，之後串接 Supabase
 const myCourses = [
-  { id: 1, title: 'UXR 基礎研究方法', stage: 'R1', progress: 60, type: '線上課程' },
-  { id: 2, title: 'UXR 研究實戰營', stage: 'R1', progress: 30, type: '實戰營' },
-  { id: 3, title: 'UX 設計思考工作坊', stage: 'R2', progress: 80, type: '工作坊' },
-  { id: 4, title: 'UX 讀書會 Q1', stage: '', progress: 50, type: '小聚活動' },
+  { id: 1,  title: 'UXR 基礎研究方法',  stage: 'R1', progress: 60, type: '線上課程' },
+  { id: 2,  title: 'UXR 研究實戰營',    stage: 'R1', progress: 30, type: '實戰營'  },
+  { id: 3,  title: '問卷設計與分析',     stage: 'R2', progress: 40, type: '線上課程' },
+  { id: 5,  title: '研究資料視覺化',     stage: 'R2', progress: 90, type: '線上課程' },
 ]
 
-const COURSE_FILTER_TABS = ['全部', '線上課程', '實戰營', '工作坊', '小聚活動']
+const COURSE_FILTER_TABS = ['全部', '線上課程', '實戰營']
 
 const recommendedCourses = [
   { id: 3, title: '問卷設計與分析', type: '線上課程' },

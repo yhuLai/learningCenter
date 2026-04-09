@@ -99,14 +99,14 @@ export default function Gathering() {
           </div>
         </section>
 
-        {/* 其他活動 */}
+        {/* 參與過的活動 */}
         <section>
           <p style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }}>
-            其他活動
+            參與過的活動
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
             {gatherings.map(g => (
-              <CourseCard key={g.id} course={{ ...g, ctaLabel: '查看活動' }} />
+              <CourseCard key={g.id} course={{ ...g, ctaLabel: '查看活動', hidePrice: true }} />
             ))}
           </div>
         </section>

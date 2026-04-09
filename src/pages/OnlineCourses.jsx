@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import Layout from '../components/layout/Layout'
 import CourseCard from '../components/ui/CourseCard'
+import { freeCourses, paidCourses as allPaidCourses } from '../data/courses'
 
-// 暫用 mock 資料，之後串接 Supabase
 const livestreams = [
   {
     id: 2,
@@ -22,22 +22,6 @@ const livestreams = [
   },
 ]
 
-const videoCourses = [
-  { id: 1,  title: 'UXR 基礎研究方法',        stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '學習 UXR 的核心研究框架，從零建立研究思維。',        progress: 60 },
-  { id: 6,  title: 'UXR 報告撰寫技巧',        stage: 'R2', free: true, type: 'UI/UX職涯發展', desc: '學習如何撰寫具說服力的研究報告與建議。',              progress: 30 },
-  { id: 11, title: '研究倫理與訪談同意書',    stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '了解 UXR 研究倫理規範，學習如何正確取得受訪者同意。', progress: 100 },
-  { id: 12, title: '競品分析入門',            stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '系統性地拆解競品，找出市場機會與設計缺口。',            progress: 0 },
-  { id: 13, title: 'PM 入門：從需求到驗證',  stage: 'R1', free: true, type: 'PM職涯發展',   desc: '帶你了解 PM 如何定義問題、拆解需求並設計驗證方案。',  progress: 15 },
-  { id: 2, title: '使用者訪談技巧',           stage: 'R1', free: false, price: 2800, type: 'UI/UX職涯發展', desc: '深入掌握訪談規劃、引導與分析的完整流程。',           progress: 75 },
-  { id: 3, title: '問卷設計與分析',           stage: 'R2', free: false, price: 3200, type: 'UI/UX職涯發展', desc: '學習如何設計有效問卷並進行量化資料分析。',           progress: 40 },
-  { id: 4, title: 'Usability Testing 實戰',  stage: 'R3', free: false, price: 3600, type: 'UI/UX職涯發展', desc: '從規劃到執行，完整體驗易用性測試流程。',             progress: 0 },
-  { id: 5, title: '研究資料視覺化',           stage: 'R2', free: false, price: 2800, type: 'UI/UX職涯發展', desc: '將複雜研究資料轉化為清晰易懂的視覺呈現。',           progress: 90 },
-  { id: 7, title: 'PM 需求訪談與用戶研究',   stage: 'R2', free: false, price: 3200, type: 'PM職涯發展',   desc: '從 PM 視角出發，學習如何運用 UXR 方法驗證需求。',   progress: 20 },
-  { id: 8, title: '產品指標設計與分析',       stage: 'R3', free: false, price: 3600, type: 'PM職涯發展',   desc: '學習如何設定產品 KPI 並透過數據驅動決策。',         progress: 55 },
-  { id: 9, title: '服務藍圖與顧客旅程',       stage: 'R2', free: false, price: 2800, type: '服務設計系列', desc: '以系統視角繪製服務藍圖，找出關鍵接觸點。',           progress: 10 },
-  { id: 10, title: '服務設計工作坊方法論',   stage: 'R3', free: false, price: 3600, type: '服務設計系列', desc: '掌握服務設計全流程，帶領跨部門共創工作坊。',         progress: 0 },
-]
-
 const COURSE_TYPES = ['所有課程', 'PM職涯發展', 'UI/UX職涯發展', '服務設計系列']
 
 const statusTag = {
@@ -53,10 +37,8 @@ const statusTag = {
 
 export default function OnlineCourses() {
   const [courseType, setCourseType] = useState('所有課程')
-  const freeCourses = videoCourses.filter(c => c.free)
 
-  const paidCourses = videoCourses
-    .filter(c => !c.free)
+  const paidCourses = allPaidCourses
     .filter(c => courseType === '所有課程' || c.type === courseType)
 
   return (
@@ -172,7 +154,7 @@ export default function OnlineCourses() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
             {paidCourses.map(course => (
-              <CourseCard key={course.id} course={{ ...course, ctaLabel: '前往觀看', hidePrice: true }} />
+              <CourseCard key={course.id} course={{ ...course, ctaLabel: '前往觀看', hidePrice: true, linkTo: `/video/${course.id}` }} />
             ))}
           </div>
         </section>
@@ -186,7 +168,7 @@ export default function OnlineCourses() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
             {freeCourses.map(course => (
-              <CourseCard key={course.id} course={{ ...course, ctaLabel: '前往觀看', hideTags: true, hidePrice: true }} />
+              <CourseCard key={course.id} course={{ ...course, ctaLabel: '前往觀看', hideTags: true, hidePrice: true, linkTo: `/video/${course.id}` }} />
             ))}
           </div>
         </section>

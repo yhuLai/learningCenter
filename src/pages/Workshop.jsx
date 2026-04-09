@@ -100,14 +100,14 @@ export default function Workshop() {
           </div>
         </section>
 
-        {/* 工作坊介紹 */}
+        {/* 參與過的工作坊 */}
         <section>
           <p style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }}>
-            工作坊介紹
+            參與過的工作坊
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
             {workshops.map(ws => (
-              <CourseCard key={ws.id} course={{ ...ws, ctaLabel: '查看工作坊', hideTags: true }} />
+              <CourseCard key={ws.id} course={{ ...ws, ctaLabel: '查看工作坊', hideTags: true, hidePrice: true }} />
             ))}
           </div>
         </section>

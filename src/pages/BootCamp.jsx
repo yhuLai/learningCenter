@@ -376,8 +376,8 @@ export default function BootCamp() {
               }}>
                 <span style={{ fontSize: '12px', color: '#9999AA' }}>封面圖片</span>
               </div>
-              <a
-                href="#"
+              <Link
+                to="/video/101"
                 style={{
                   display: 'block', textAlign: 'center',
                   background: '#4A3FD6', color: '#FFFFFF',
@@ -389,7 +389,7 @@ export default function BootCamp() {
                 onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
               >
                 前往觀看
-              </a>
+              </Link>
             </div>
           </div>
         </section>

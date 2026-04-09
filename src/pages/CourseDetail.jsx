@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import Layout from '../components/layout/Layout'
+import { getCourseById } from '../data/courses'
 
-// mock 資料，之後串接 Supabase（與 OnlineCourses 同步）
+// 以下為舊 mock 資料，已移至 src/data/courses.js，保留供參考後刪除
 const allCourses = [
   // ── 免費課程 ──────────────────────────────────────────────
   {
@@ -153,7 +154,7 @@ const allCourses = [
 export default function CourseDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const course = allCourses.find(c => c.id === Number(id))
+  const course = getCourseById(id)
 
   if (!course) {
     return (
