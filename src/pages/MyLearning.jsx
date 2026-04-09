@@ -17,6 +17,18 @@ const recommendedCourses = [
   { id: 4, title: 'Usability Testing 實戰', type: '實戰營' },
 ]
 
+// 已購買課程中即將開始的活動，依日期升冪排列（越近越前）
+const upcomingActivities = [
+  { id: 1, type: '直播',  title: 'UXR 基礎研究方法：研究目的與假設定義', date: '2026-04-10', time: '19:30 – 22:00' },
+  { id: 2, type: '實戰營', title: 'R1 品牌印象調查游擊訪談：第 2 週課程', date: '2026-04-14', time: '19:30 – 22:00' },
+  { id: 3, type: '直播',  title: '使用者訪談實戰示範',                   date: '2026-04-19', time: '10:00 – 12:00' },
+]
+
+const activityTypeStyle = {
+  直播:  { background: '#EEF0FD', color: '#4A3FD6' },
+  實戰營: { background: '#FEF9E7', color: '#8B7320' },
+}
+
 const card = {
   background: '#FFFFFF',
   border: '0.5px solid #E5E5EE',
@@ -53,86 +65,102 @@ export default function MyLearning() {
         {/* 個人檔案 */}
         <p style={{ ...sectionLabel, marginBottom: '12px' }}>個人檔案</p>
 
-        {/* UXR 認證等級 */}
+        {/* 課程活動 */}
         <div style={{ ...card, marginBottom: '16px', padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <p style={{ ...sectionLabel, margin: 0 }}>UXR 認證等級</p>
-            <Link to="/bootcamp#plans" style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}>
-              提升我的等級
-            </Link>
-          </div>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '32px',
-          }}>
-            {/* 左側：等級資訊 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{
-                width: '56px', height: '56px',
-                background: '#EEF0FD',
+          <p style={{ ...sectionLabel, marginBottom: '16px' }}>課程活動</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {upcomingActivities.map(activity => (
+              <div key={activity.id} style={{
+                background: '#FFFFFF',
+                border: '0.5px solid #E5E5EE',
                 borderRadius: '12px',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
               }}>
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                  <path d="M14 3L17.5 10.5L26 11.5L20 17.5L21.5 26L14 22L6.5 26L8 17.5L2 11.5L10.5 10.5L14 3Z"
-                    fill="#4A3FD6" fillOpacity="0.15" stroke="#4A3FD6" strokeWidth="1.5"
-                    strokeLinejoin="round" />
-                </svg>
-              </div>
-              <div>
-                <p style={{ fontSize: '11px', color: '#9999AA', fontWeight: '500', margin: '0 0 4px', letterSpacing: '0.5px' }}>
-                  目前等級
-                </p>
-                <p style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 4px' }}>
-                  初階市場研究員認證
-                </p>
-                <p style={{ fontSize: '13px', color: '#6B6B80', margin: 0 }}>
-                  具備基礎市場研究的規劃與執行能力
-                </p>
-              </div>
-            </div>
+                {/* 封面圖片 */}
+                <div style={{
+                  width: '160px',
+                  flexShrink: 0,
+                  alignSelf: 'stretch',
+                  background: '#F7F7F8',
+                  borderRight: '0.5px solid #E5E5EE',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <span style={{ fontSize: '12px', color: '#9999AA' }}>封面圖片</span>
+                </div>
 
-            {/* 右側：R1–R4 進度圈 */}
-            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-              {['R1', 'R2', 'R3', 'R4'].map((stage, idx) => {
-                const lit = idx < 3
-                return (
-                  <div key={stage} style={{ display: 'flex', alignItems: 'center' }}>
-                    {idx > 0 && (
-                      <div style={{ width: '40px', height: '2px', background: idx < 3 ? '#4A3FD6' : '#E5E5EE' }} />
-                    )}
-                    <div style={{
-                      width: '52px', height: '52px',
+                {/* 內容區 */}
+                <div style={{
+                  flex: 1,
+                  padding: '20px 24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '24px',
+                }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <span style={{
+                      ...activityTypeStyle[activity.type],
                       borderRadius: '999px',
-                      background: lit ? '#4A3FD6' : '#F7F7F8',
-                      border: lit ? 'none' : '0.5px solid #E5E5EE',
-                      display: 'flex', flexDirection: 'column',
-                      alignItems: 'center', justifyContent: 'center',
-                      gap: '1px',
+                      padding: '4px 12px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      display: 'inline-block',
+                      alignSelf: 'flex-start',
                     }}>
-                      <span style={{ fontSize: '13px', fontWeight: '500', color: lit ? '#FFFFFF' : '#9999AA', lineHeight: 1 }}>
-                        {stage}
-                      </span>
-                      {lit && (
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                          <path d="M2.5 6L5 8.5L9.5 4" stroke="white" strokeWidth="1.5"
-                            strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      )}
-                    </div>
+                      {activity.type}
+                    </span>
+                    <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
+                      {activity.title}
+                    </p>
+                    <p style={{ fontSize: '13px', color: '#6B6B80', margin: 0 }}>
+                      {activity.date} &nbsp;·&nbsp; {activity.time}
+                    </p>
                   </div>
-                )
-              })}
-            </div>
+                  <a
+                    href="#"
+                    style={{
+                      display: 'inline-block',
+                      background: '#4A3FD6',
+                      color: '#FFFFFF',
+                      border: 'none',
+                      padding: '10px 20px',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      textDecoration: 'none',
+                      whiteSpace: 'nowrap',
+                      transition: 'background 0.15s ease',
+                      flexShrink: 0,
+                      alignSelf: 'flex-start',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
+                    onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
+                  >
+                    前往觀看
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+        {/* 學習領域 + 學習OKR（左） / 學習雷達圖（右） */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+          {/* 左欄：學習 OKR（含學習領域） */}
           <div style={card}>
-            <p style={{ ...sectionLabel, marginBottom: '12px' }}>學習領域</p>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <p style={{ ...sectionLabel, margin: 0 }}>學習 OKR</p>
+              <Link to="/okr-setup" style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}>
+                設定學習OKR
+              </Link>
+            </div>
+
+            {/* 學習領域 */}
+            <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 8px' }}>學習領域</p>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
               {['服務設計', 'UX 研究'].map(label => (
                 <span key={label} style={{
                   background: '#EEF0FD',
@@ -146,25 +174,17 @@ export default function MyLearning() {
                 </span>
               ))}
             </div>
-          </div>
-          <div style={card}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <p style={{ ...sectionLabel, margin: 0 }}>學習 OKR</p>
-              <Link to="/okr-setup" style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}>
-                設定學習OKR
-              </Link>
-            </div>
-            <p style={{ fontSize: '15px', color: '#9999AA', margin: 0 }}>尚未設定</p>
-          </div>
-        </div>
 
-        {/* 學習雷達圖 + 推薦課程 */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-          {/* 學習雷達圖 */}
-          <div style={card}>
+            {/* OKR 內容 */}
+            <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 8px' }}>目標</p>
+            <p style={{ fontSize: '14px', color: '#9999AA', margin: 0 }}>尚未設定</p>
+          </div>
+
+          {/* 右欄：學習雷達圖 */}
+          <div style={{ ...card, display: 'flex', flexDirection: 'column' }}>
             <p style={sectionLabel}>學習雷達圖</p>
             <div style={{
-              height: '220px',
+              flex: 1,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -176,55 +196,11 @@ export default function MyLearning() {
               尚無學習資料
             </div>
           </div>
-
-          {/* 推薦課程 */}
-          <div style={card}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <p style={{ ...sectionLabel, margin: 0 }}>推薦課程</p>
-              <Link
-                to="/online-courses"
-                style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}
-              >
-                查看詳情
-              </Link>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {recommendedCourses.map(course => (
-                <div key={course.id} style={{
-                  border: '0.5px solid #E5E5EE',
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  alignItems: 'stretch',
-                }}>
-                  {/* 左側封面圖佔位 */}
-                  <div style={{
-                    width: '96px',
-                    flexShrink: 0,
-                    background: '#F7F7F8',
-                    borderRight: '0.5px solid #E5E5EE',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    <span style={{ fontSize: '11px', color: '#9999AA' }}>封面圖片</span>
-                  </div>
-                  {/* 右側：標題 + 課程類型 */}
-                  <div style={{ flex: 1, padding: '12px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }}>
-                    <p style={{ fontSize: '14px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
-                      {course.title}
-                    </p>
-                    <span style={{ fontSize: '12px', color: '#9999AA' }}>{course.type}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* 我的課程 */}
         <div style={card}>
-          <p style={sectionLabel}>我的課程</p>
+          <p style={sectionLabel}>近期觀看的課程</p>
 
           {/* 類型篩選 tabs */}
           <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>

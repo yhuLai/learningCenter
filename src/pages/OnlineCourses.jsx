@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Layout from '../components/layout/Layout'
 import CourseCard from '../components/ui/CourseCard'
 
@@ -23,19 +23,19 @@ const livestreams = [
 ]
 
 const videoCourses = [
-  { id: 1,  title: 'UXR 基礎研究方法',        stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '學習 UXR 的核心研究框架，從零建立研究思維。' },
-  { id: 6,  title: 'UXR 報告撰寫技巧',        stage: 'R2', free: true, type: 'UI/UX職涯發展', desc: '學習如何撰寫具說服力的研究報告與建議。' },
-  { id: 11, title: '研究倫理與訪談同意書',    stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '了解 UXR 研究倫理規範，學習如何正確取得受訪者同意。' },
-  { id: 12, title: '競品分析入門',            stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '系統性地拆解競品，找出市場機會與設計缺口。' },
-  { id: 13, title: 'PM 入門：從需求到驗證',  stage: 'R1', free: true, type: 'PM職涯發展',   desc: '帶你了解 PM 如何定義問題、拆解需求並設計驗證方案。' },
-  { id: 2, title: '使用者訪談技巧',           stage: 'R1', free: false, price: 2800, type: 'UI/UX職涯發展', desc: '深入掌握訪談規劃、引導與分析的完整流程。' },
-  { id: 3, title: '問卷設計與分析',           stage: 'R2', free: false, price: 3200, type: 'UI/UX職涯發展', desc: '學習如何設計有效問卷並進行量化資料分析。' },
-  { id: 4, title: 'Usability Testing 實戰',  stage: 'R3', free: false, price: 3600, type: 'UI/UX職涯發展', desc: '從規劃到執行，完整體驗易用性測試流程。' },
-  { id: 5, title: '研究資料視覺化',           stage: 'R2', free: false, price: 2800, type: 'UI/UX職涯發展', desc: '將複雜研究資料轉化為清晰易懂的視覺呈現。' },
-  { id: 7, title: 'PM 需求訪談與用戶研究',   stage: 'R2', free: false, price: 3200, type: 'PM職涯發展',   desc: '從 PM 視角出發，學習如何運用 UXR 方法驗證需求。' },
-  { id: 8, title: '產品指標設計與分析',       stage: 'R3', free: false, price: 3600, type: 'PM職涯發展',   desc: '學習如何設定產品 KPI 並透過數據驅動決策。' },
-  { id: 9, title: '服務藍圖與顧客旅程',       stage: 'R2', free: false, price: 2800, type: '服務設計系列', desc: '以系統視角繪製服務藍圖，找出關鍵接觸點。' },
-  { id: 10, title: '服務設計工作坊方法論',   stage: 'R3', free: false, price: 3600, type: '服務設計系列', desc: '掌握服務設計全流程，帶領跨部門共創工作坊。' },
+  { id: 1,  title: 'UXR 基礎研究方法',        stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '學習 UXR 的核心研究框架，從零建立研究思維。',        progress: 60 },
+  { id: 6,  title: 'UXR 報告撰寫技巧',        stage: 'R2', free: true, type: 'UI/UX職涯發展', desc: '學習如何撰寫具說服力的研究報告與建議。',              progress: 30 },
+  { id: 11, title: '研究倫理與訪談同意書',    stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '了解 UXR 研究倫理規範，學習如何正確取得受訪者同意。', progress: 100 },
+  { id: 12, title: '競品分析入門',            stage: 'R1', free: true, type: 'UI/UX職涯發展', desc: '系統性地拆解競品，找出市場機會與設計缺口。',            progress: 0 },
+  { id: 13, title: 'PM 入門：從需求到驗證',  stage: 'R1', free: true, type: 'PM職涯發展',   desc: '帶你了解 PM 如何定義問題、拆解需求並設計驗證方案。',  progress: 15 },
+  { id: 2, title: '使用者訪談技巧',           stage: 'R1', free: false, price: 2800, type: 'UI/UX職涯發展', desc: '深入掌握訪談規劃、引導與分析的完整流程。',           progress: 75 },
+  { id: 3, title: '問卷設計與分析',           stage: 'R2', free: false, price: 3200, type: 'UI/UX職涯發展', desc: '學習如何設計有效問卷並進行量化資料分析。',           progress: 40 },
+  { id: 4, title: 'Usability Testing 實戰',  stage: 'R3', free: false, price: 3600, type: 'UI/UX職涯發展', desc: '從規劃到執行，完整體驗易用性測試流程。',             progress: 0 },
+  { id: 5, title: '研究資料視覺化',           stage: 'R2', free: false, price: 2800, type: 'UI/UX職涯發展', desc: '將複雜研究資料轉化為清晰易懂的視覺呈現。',           progress: 90 },
+  { id: 7, title: 'PM 需求訪談與用戶研究',   stage: 'R2', free: false, price: 3200, type: 'PM職涯發展',   desc: '從 PM 視角出發，學習如何運用 UXR 方法驗證需求。',   progress: 20 },
+  { id: 8, title: '產品指標設計與分析',       stage: 'R3', free: false, price: 3600, type: 'PM職涯發展',   desc: '學習如何設定產品 KPI 並透過數據驅動決策。',         progress: 55 },
+  { id: 9, title: '服務藍圖與顧客旅程',       stage: 'R2', free: false, price: 2800, type: '服務設計系列', desc: '以系統視角繪製服務藍圖，找出關鍵接觸點。',           progress: 10 },
+  { id: 10, title: '服務設計工作坊方法論',   stage: 'R3', free: false, price: 3600, type: '服務設計系列', desc: '掌握服務設計全流程，帶領跨部門共創工作坊。',         progress: 0 },
 ]
 
 const COURSE_TYPES = ['所有課程', 'PM職涯發展', 'UI/UX職涯發展', '服務設計系列']
@@ -53,27 +53,7 @@ const statusTag = {
 
 export default function OnlineCourses() {
   const [courseType, setCourseType] = useState('所有課程')
-  const [freeSlide, setFreeSlide] = useState(0)
   const freeCourses = videoCourses.filter(c => c.free)
-  const VISIBLE = 3
-  const GAP = 20
-  const maxSlide = freeCourses.length - VISIBLE
-
-  // 用 ref 量出容器真實寬度，確保卡片寬度和位移量都是精確 px
-  const carouselRef = useRef(null)
-  const [cardW, setCardW] = useState(0)
-
-  useEffect(() => {
-    const measure = () => {
-      if (carouselRef.current) {
-        const w = carouselRef.current.offsetWidth
-        setCardW((w - GAP * (VISIBLE - 1)) / VISIBLE)
-      }
-    }
-    measure()
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [])
 
   const paidCourses = videoCourses
     .filter(c => !c.free)
@@ -164,86 +144,11 @@ export default function OnlineCourses() {
           </div>
         </section>
 
-        {/* 免費課程 */}
+        {/* 影片課程：原付費課程 grid + 下拉選單 */}
         <section style={{ marginBottom: '40px' }}>
-          {/* Header row */}
-          <div style={{ marginBottom: '12px' }}>
-            <p style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
-              免費課程
-            </p>
-          </div>
-
-          {/* Carousel wrapper — position:relative 讓箭頭可絕對定位到外側 */}
-          <div style={{ position: 'relative' }}>
-            {/* 左箭頭 — 超出左邊界 */}
-            <button
-              onClick={() => setFreeSlide(i => Math.max(0, i - 1))}
-              disabled={freeSlide === 0}
-              style={{
-                position: 'absolute',
-                left: '-48px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '36px', height: '36px',
-                background: '#FFFFFF',
-                border: '0.5px solid #E5E5EE',
-                borderRadius: '999px',
-                cursor: freeSlide === 0 ? 'default' : 'pointer',
-                fontSize: '16px',
-                color: freeSlide === 0 ? '#C5C5D8' : '#1A1A2E',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'inherit',
-                transition: 'color 0.15s',
-                zIndex: 1,
-              }}
-            >‹</button>
-
-            {/* Card track */}
-            <div ref={carouselRef} style={{ overflow: 'hidden' }}>
-              <div style={{
-                display: 'flex',
-                gap: `${GAP}px`,
-                transform: `translateX(${-freeSlide * (cardW + GAP)}px)`,
-                transition: 'transform 0.3s ease',
-              }}>
-                {freeCourses.map(course => (
-                  <div key={course.id} style={{ flexShrink: 0, width: `${cardW}px`, display: 'flex' }}>
-                    <CourseCard course={course} />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 右箭頭 — 超出右邊界 */}
-            <button
-              onClick={() => setFreeSlide(i => Math.min(maxSlide, i + 1))}
-              disabled={freeSlide === maxSlide}
-              style={{
-                position: 'absolute',
-                right: '-48px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '36px', height: '36px',
-                background: '#FFFFFF',
-                border: '0.5px solid #E5E5EE',
-                borderRadius: '999px',
-                cursor: freeSlide === maxSlide ? 'default' : 'pointer',
-                fontSize: '16px',
-                color: freeSlide === maxSlide ? '#C5C5D8' : '#1A1A2E',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'inherit',
-                transition: 'color 0.15s',
-                zIndex: 1,
-              }}
-            >›</button>
-          </div>
-        </section>
-
-        {/* 付費課程 */}
-        <section>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
             <p style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
-              付費課程
+              影片課程
             </p>
             <select
               value={courseType}
@@ -267,7 +172,21 @@ export default function OnlineCourses() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
             {paidCourses.map(course => (
-              <CourseCard key={course.id} course={course} />
+              <CourseCard key={course.id} course={{ ...course, ctaLabel: '前往觀看', hidePrice: true }} />
+            ))}
+          </div>
+        </section>
+
+        {/* 直播回放 */}
+        <section>
+          <div style={{ marginBottom: '12px' }}>
+            <p style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
+              直播回放
+            </p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+            {freeCourses.map(course => (
+              <CourseCard key={course.id} course={{ ...course, ctaLabel: '前往觀看', hideTags: true, hidePrice: true }} />
             ))}
           </div>
         </section>

@@ -72,6 +72,8 @@ export default function BootCamp() {
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 2))
   const [calLevel, setCalLevel]         = useState('R1')
   const [selectedBatch, setSelectedBatch] = useState(batches[0])
+  const [doneOpen, setDoneOpen]         = useState(true)
+  const [undoneOpen, setUndoneOpen]     = useState(true)
   const { hash } = useLocation()
 
   useEffect(() => {
@@ -163,17 +165,17 @@ export default function BootCamp() {
               </div>
             </div>
 
-            {/* 右側：R1–R4 進度圈 */}
+            {/* 右側：R0–R4 進度圈 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0', flexShrink: 0 }}>
-              {['R1', 'R2', 'R3', 'R4'].map((stage, idx) => {
-                const lit = idx < 3   // R1 R2 R3 點亮
+              {['R0', 'R1', 'R2', 'R3', 'R4'].map((stage, idx) => {
+                const lit = idx <= 3   // R0 R1 R2 R3 點亮
                 return (
                   <div key={stage} style={{ display: 'flex', alignItems: 'center' }}>
                     {/* 連線（第一個左邊不畫） */}
                     {idx > 0 && (
                       <div style={{
                         width: '40px', height: '2px',
-                        background: idx < 3 ? '#4A3FD6' : '#E5E5EE',
+                        background: idx <= 3 ? '#4A3FD6' : '#E5E5EE',
                       }} />
                     )}
                     {/* 圓圈 */}
@@ -207,19 +209,265 @@ export default function BootCamp() {
           </div>
         </section>
 
-        {/* 學習營方案 */}
-        <section id="plans" style={{ marginBottom: '40px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <p style={{ fontSize: '28px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 8px' }}>選擇適合你的學習方案</p>
-            <p style={{ fontSize: '14px', color: '#6B6B80', margin: 0 }}>
-              四個階段、四種研究方法，從入門到進階依序解鎖。每階段都有真實專案，結業即有作品集。
-            </p>
+
+        {/* 進行中的營隊 */}
+        <section style={{ marginBottom: '40px' }}>
+          <p style={{ ...sectionLabel }}>進行中的營隊</p>
+
+          {/* 2026春季班R1 card */}
+          <div style={{ ...card, padding: '20px', display: 'flex', gap: '24px' }}>
+
+            {/* 左側內容 */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontSize: '20px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 20px' }}>
+                2026春季班R1
+              </p>
+
+              {/* 即將開始的課程 */}
+              <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 12px' }}>即將開始的課程</p>
+              <div style={{
+                border: '0.5px solid #E5E5EE',
+                borderRadius: '10px',
+                padding: '14px 16px',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '16px',
+              }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', minWidth: 0 }}>
+                  <span style={{
+                    background: '#EEF0FD', color: '#4A3FD6',
+                    borderRadius: '999px', padding: '3px 10px',
+                    fontSize: '12px', fontWeight: '500',
+                    display: 'inline-block', alignSelf: 'flex-start',
+                  }}>
+                    即將開始
+                  </span>
+                  <p style={{ fontSize: '14px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
+                    R1 第 2 週：研究目的與問題定義
+                  </p>
+                  <p style={{ fontSize: '12px', color: '#6B6B80', margin: 0 }}>
+                    2026-04-14 &nbsp;·&nbsp; 19:30 – 22:00
+                  </p>
+                </div>
+                <button
+                  disabled
+                  style={{
+                    flexShrink: 0,
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    border: '0.5px solid #C5C5D8',
+                    background: '#F7F7F8',
+                    color: '#9999AA',
+                    cursor: 'not-allowed',
+                    whiteSpace: 'nowrap',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  加入直播
+                </button>
+              </div>
+
+              {/* 營隊進度 */}
+              <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 10px' }}>營隊進度</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <span style={{ fontSize: '13px', color: '#6B6B80' }}>已完成課程</span>
+                <span style={{ fontSize: '13px', fontWeight: '500', color: '#4A3FD6' }}>1 / 5 堂</span>
+              </div>
+              <div style={{ height: '4px', background: '#E5E5EE', borderRadius: '999px', overflow: 'hidden', marginBottom: '16px' }}>
+                <div style={{ height: '100%', width: '20%', background: '#4A3FD6', borderRadius: '999px' }} />
+              </div>
+
+              {/* 已完成 */}
+              <button
+                onClick={() => setDoneOpen(o => !o)}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  background: 'none', border: 'none', padding: '6px 0', cursor: 'pointer',
+                  marginBottom: '6px', fontFamily: 'inherit',
+                }}
+              >
+                <span style={{ fontSize: '13px', fontWeight: '500', color: '#1A1A2E' }}>已完成（1）</span>
+                <span style={{ fontSize: '12px', color: '#9999AA' }}>{doneOpen ? '▼' : '▲'}</span>
+              </button>
+              {doneOpen && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px' }}>
+                  {[{ title: 'R1 品牌印象調查游擊訪談：貓咖消費者印象調查', date: '2026-04-07' }].map((item, idx) => (
+                    <div key={idx} style={{
+                      display: 'flex', alignItems: 'center', gap: '10px',
+                      padding: '8px 10px', background: '#F7F7F8', borderRadius: '8px',
+                    }}>
+                      <div style={{
+                        width: '18px', height: '18px', borderRadius: '999px', flexShrink: 0,
+                        background: '#4A3FD6',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                          <path d="M2 5L4.5 7.5L8.5 3" stroke="white" strokeWidth="1.5"
+                            strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                        <p style={{ fontSize: '13px', fontWeight: '500', color: '#1A1A2E', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                          {item.title}
+                        </p>
+                        <p style={{ fontSize: '12px', color: '#9999AA', margin: 0, flexShrink: 0 }}>{item.date}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 尚未開始 */}
+              <button
+                onClick={() => setUndoneOpen(o => !o)}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  background: 'none', border: 'none', padding: '6px 0', cursor: 'pointer',
+                  marginBottom: '6px', fontFamily: 'inherit',
+                }}
+              >
+                <span style={{ fontSize: '13px', fontWeight: '500', color: '#1A1A2E' }}>尚未開始（4）</span>
+                <span style={{ fontSize: '12px', color: '#9999AA' }}>{undoneOpen ? '▼' : '▲'}</span>
+              </button>
+              {undoneOpen && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {[
+                    { title: 'R1 第 2 週：研究目的與問題定義', date: '2026-04-14' },
+                    { title: 'R1 第 3 週：研究設計與訪談規劃', date: '2026-04-21' },
+                    { title: 'R1 實體工作坊',                 date: '2026-05-05' },
+                    { title: 'R1 第 5 週：資料分析與洞察萃取', date: '2026-05-12' },
+                  ].map((item, idx) => (
+                    <div key={idx} style={{
+                      display: 'flex', alignItems: 'center', gap: '10px',
+                      padding: '8px 10px', background: '#F7F7F8', borderRadius: '8px',
+                    }}>
+                      <div style={{
+                        width: '18px', height: '18px', borderRadius: '999px', flexShrink: 0,
+                        border: '1.5px solid #C5C5D8',
+                      }} />
+                      <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                        <p style={{ fontSize: '13px', fontWeight: '500', color: '#6B6B80', margin: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                          {item.title}
+                        </p>
+                        <p style={{ fontSize: '12px', color: '#9999AA', margin: 0, flexShrink: 0 }}>{item.date}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 右側：封面圖片（橫式）+ 按鈕 */}
+            <div style={{
+              width: '33%', flexShrink: 0,
+              display: 'flex', flexDirection: 'column', gap: '12px',
+            }}>
+              <div style={{
+                width: '100%',
+                aspectRatio: '16 / 9',
+                background: '#F7F7F8',
+                border: '0.5px solid #E5E5EE',
+                borderRadius: '10px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <span style={{ fontSize: '12px', color: '#9999AA' }}>封面圖片</span>
+              </div>
+              <a
+                href="#"
+                style={{
+                  display: 'block', textAlign: 'center',
+                  background: '#4A3FD6', color: '#FFFFFF',
+                  padding: '10px', borderRadius: '8px',
+                  fontSize: '14px', fontWeight: '500',
+                  textDecoration: 'none', transition: 'background 0.15s ease',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
+                onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
+              >
+                前往觀看
+              </a>
+            </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', paddingTop: '16px' }}>
-            {plans.map(plan => <PlanCard key={plan.stage} plan={plan} />)}
-          </div>
-          <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <Link to="#" style={{ fontSize: '13px', color: '#4A3FD6', textDecoration: 'none' }}>了解認證規則 →</Link>
+        </section>
+
+        {/* 參與過的營隊 */}
+        <section style={{ marginBottom: '40px' }}>
+          <p style={{ ...sectionLabel }}>參與過的營隊</p>
+          <div style={{
+            background: '#FFFFFF',
+            border: '0.5px solid #E5E5EE',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+          }}>
+            {/* 封面圖片 */}
+            <div style={{
+              width: '160px',
+              flexShrink: 0,
+              alignSelf: 'stretch',
+              background: '#F7F7F8',
+              borderRight: '0.5px solid #E5E5EE',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <span style={{ fontSize: '12px', color: '#9999AA' }}>封面圖片</span>
+            </div>
+
+            {/* 內容區 */}
+            <div style={{
+              flex: 1,
+              padding: '20px 24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '24px',
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <span style={{
+                  background: '#F7F7F8',
+                  color: '#6B6B80',
+                  borderRadius: '999px',
+                  padding: '4px 12px',
+                  fontSize: '12px',
+                  fontWeight: '500',
+                  display: 'inline-block',
+                  alignSelf: 'flex-start',
+                }}>
+                  R0
+                </span>
+                <p style={{ fontSize: '15px', fontWeight: '500', color: '#1A1A2E', margin: 0 }}>
+                  Re:從零開始學UX之旅 — 21天行動計劃
+                </p>
+              </div>
+              <a
+                href="#"
+                style={{
+                  display: 'inline-block',
+                  background: '#4A3FD6',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap',
+                  transition: 'background 0.15s ease',
+                  flexShrink: 0,
+                  alignSelf: 'center',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
+                onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
+              >
+                觀看回放
+              </a>
+            </div>
           </div>
         </section>
 

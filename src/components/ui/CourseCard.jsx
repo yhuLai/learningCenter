@@ -110,12 +110,26 @@ export default function CourseCard({ course }) {
           {course.desc}
         </p>
 
+        {/* 進度條 */}
+        {course.progress !== undefined && (
+          <div style={{ marginTop: 'auto', paddingTop: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <span style={{ fontSize: '12px', color: '#6B6B80' }}>學習進度</span>
+              <span style={{ fontSize: '12px', fontWeight: '500', color: '#4A3FD6' }}>{course.progress}%</span>
+            </div>
+            <div style={{ height: '4px', background: '#E5E5EE', borderRadius: '999px', overflow: 'hidden' }}>
+              <div style={{ height: '100%', width: `${course.progress}%`, background: '#4A3FD6', borderRadius: '999px' }} />
+            </div>
+          </div>
+        )}
+
         {/* 價格 + CTA */}
-        <div style={{ marginTop: 'auto', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {course.free
-            ? <span style={{ fontSize: '13px', color: '#0F6E56', fontWeight: '500' }}>免費</span>
-            : <span style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E' }}>NT$ {course.price?.toLocaleString()}</span>
-          }
+        <div style={{ marginTop: course.progress !== undefined ? '12px' : 'auto', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: course.hidePrice ? 'flex-end' : 'space-between' }}>
+          {!course.hidePrice && (
+            course.free
+              ? <span style={{ fontSize: '13px', color: '#0F6E56', fontWeight: '500' }}>免費</span>
+              : <span style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E' }}>NT$ {course.price?.toLocaleString()}</span>
+          )}
           <Link
             to={linkTo}
             style={{

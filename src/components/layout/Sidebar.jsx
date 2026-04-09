@@ -5,7 +5,7 @@ import { supabase } from '../../lib/supabase'
 
 const baseNavItems = [
   { label: '線上課程', path: '/online-courses' },
-  { label: '學習營',   path: '/bootcamp' },
+  { label: '實戰營',   path: '/bootcamp' },
   { label: '工作坊',   path: '/workshop' },
   { label: '小聚活動', path: '/gathering' },
   { label: 'UX工具箱', path: '/ux-toolbox' },
