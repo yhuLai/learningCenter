@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import Welcome from './pages/Welcome'
-import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
 import MyLearning from './pages/MyLearning'
@@ -23,7 +22,7 @@ function App() {
       <Routes>
         {/* 公開頁面 */}
         <Route path="/" element={<Welcome />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/okr-setup" element={<OKRSetup />} />

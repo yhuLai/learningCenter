@@ -3,23 +3,35 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 export default function Login() {
+  const [step, setStep]         = useState('email')   // 'email' | 'otp'
   const [email, setEmail]       = useState('')
-  const [password, setPassword] = useState('')
+  const [otp, setOtp]           = useState('')
   const [focus, setFocus]       = useState('')
   const [error, setError]       = useState('')
   const [loading, setLoading]   = useState(false)
   const navigate                = useNavigate()
 
-  const handleSubmit = async (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault()
     setError('')
     setLoading(true)
-
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    const { error: authError } = await supabase.auth.signInWithOtp({ email })
     setLoading(false)
-
     if (authError) {
-      setError('電子郵件或密碼錯誤，請重新確認。')
+      setError('寄送驗證碼失敗，請確認信箱是否正確。')
+    } else {
+      setStep('otp')
+    }
+  }
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    const { error: authError } = await supabase.auth.verifyOtp({ email, token: otp, type: 'email' })
+    setLoading(false)
+    if (authError) {
+      setError('驗證碼錯誤或已過期，請重新確認。')
     } else {
       navigate('/my-learning')
     }
@@ -37,7 +49,7 @@ export default function Login() {
     }}>
       <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
 
-        {/* 返回按鈕 — card 外側左邊，垂直置中 */}
+        {/* 返回按鈕 */}
         <button
           onClick={() => navigate('/')}
           style={{
@@ -72,78 +84,93 @@ export default function Login() {
           width: '100%',
         }}>
 
-        {/* 品牌 */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <p style={{ fontSize: '22px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 8px' }}>
-            Soking 學習中心
-          </p>
-          <p style={{ fontSize: '14px', color: '#6B6B80', margin: 0 }}>
-            登入你的帳號繼續學習
-          </p>
-        </div>
-
-        {/* 表單 */}
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-
-          {/* Email */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={labelStyle}>電子郵件</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              onFocus={() => setFocus('email')}
-              onBlur={() => setFocus('')}
-              placeholder="name@example.com"
-              required
-              style={inputStyle(focus === 'email')}
-            />
+          {/* 品牌 */}
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <p style={{ fontSize: '22px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 8px' }}>
+              Soking 學習中心
+            </p>
+            <p style={{ fontSize: '14px', color: '#6B6B80', margin: 0 }}>
+              {step === 'email' ? '輸入信箱以取得驗證碼' : `驗證碼已寄至 ${email}`}
+            </p>
           </div>
 
-          {/* 密碼 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <label style={labelStyle}>密碼</label>
-              <Link to="/forgot-password" style={linkStyle}>忘記密碼？</Link>
-            </div>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              onFocus={() => setFocus('password')}
-              onBlur={() => setFocus('')}
-              placeholder="輸入密碼"
-              required
-              style={inputStyle(focus === 'password')}
-            />
-          </div>
+          {step === 'email' ? (
+            /* ── Step 1：輸入信箱 ── */
+            <form onSubmit={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={labelStyle}>電子郵件</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  onFocus={() => setFocus('email')}
+                  onBlur={() => setFocus('')}
+                  placeholder="name@example.com"
+                  required
+                  style={inputStyle(focus === 'email')}
+                />
+              </div>
 
-          {/* 錯誤訊息 */}
-          {error && (
-            <p style={{ fontSize: '13px', color: '#C04828', margin: 0 }}>{error}</p>
+              {error && <p style={{ fontSize: '13px', color: '#C04828', margin: 0 }}>{error}</p>}
+
+              <button
+                type="submit"
+                disabled={loading}
+                style={{ ...primaryBtn, opacity: loading ? 0.7 : 1, cursor: loading ? 'default' : 'pointer' }}
+                onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#3D34B8' }}
+                onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#4A3FD6' }}
+              >
+                {loading ? '寄送中…' : '取得驗證碼'}
+              </button>
+            </form>
+          ) : (
+            /* ── Step 2：輸入驗證碼 ── */
+            <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={labelStyle}>驗證碼</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={otp}
+                  onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  onFocus={() => setFocus('otp')}
+                  onBlur={() => setFocus('')}
+                  placeholder="請輸入 6 位數驗證碼"
+                  required
+                  style={{ ...inputStyle(focus === 'otp'), letterSpacing: '0.1em' }}
+                />
+              </div>
+
+              {error && <p style={{ fontSize: '13px', color: '#C04828', margin: 0 }}>{error}</p>}
+
+              <button
+                type="submit"
+                disabled={loading}
+                style={{ ...primaryBtn, opacity: loading ? 0.7 : 1, cursor: loading ? 'default' : 'pointer' }}
+                onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#3D34B8' }}
+                onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#4A3FD6' }}
+              >
+                {loading ? '驗證中…' : '登入'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => { setStep('email'); setOtp(''); setError('') }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', color: '#6B6B80', fontFamily: 'inherit', padding: 0 }}
+              >
+                ← 重新輸入信箱
+              </button>
+            </form>
           )}
 
-          {/* 登入按鈕 */}
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ ...primaryBtn, opacity: loading ? 0.7 : 1, cursor: loading ? 'default' : 'pointer' }}
-            onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#3D34B8' }}
-            onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#4A3FD6' }}
-          >
-            {loading ? '登入中…' : '登入'}
-          </button>
+          {/* 分隔線 */}
+          <div style={{ borderTop: '0.5px solid #E5E5EE', margin: '24px 0' }} />
 
-        </form>
-
-        {/* 分隔線 */}
-        <div style={{ borderTop: '0.5px solid #E5E5EE', margin: '24px 0' }} />
-
-        {/* 前往註冊 */}
-        <p style={{ textAlign: 'center', fontSize: '13px', color: '#6B6B80', margin: 0 }}>
-          還沒有帳號？{' '}
-          <Link to="/register" style={{ ...linkStyle, fontWeight: '500' }}>立即註冊</Link>
-        </p>
+          {/* 前往註冊 */}
+          <p style={{ textAlign: 'center', fontSize: '13px', color: '#6B6B80', margin: 0 }}>
+            還沒有帳號？{' '}
+            <Link to="/register" style={{ ...linkStyle, fontWeight: '500' }}>立即註冊</Link>
+          </p>
 
         </div>
       </div>

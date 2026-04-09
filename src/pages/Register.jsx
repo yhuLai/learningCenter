@@ -3,49 +3,43 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 export default function Register() {
-  const [form, setForm]     = useState({ name: '', email: '', password: '', confirm: '' })
-  const [focus, setFocus]   = useState('')
-  const [error, setError]   = useState('')
+  const [step, setStep]       = useState('form')   // 'form' | 'otp'
+  const [email, setEmail]     = useState('')
+  const [name, setName]       = useState('')
+  const [otp, setOtp]         = useState('')
+  const [focus, setFocus]     = useState('')
+  const [error, setError]     = useState('')
   const [loading, setLoading] = useState(false)
-  const [done, setDone]     = useState(false)
-  const navigate            = useNavigate()
+  const navigate              = useNavigate()
 
-  const set = (field) => (e) => setForm(prev => ({ ...prev, [field]: e.target.value }))
-
-  const handleSubmit = async (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault()
     setError('')
-
-    if (form.password !== form.confirm) {
-      setError('兩次輸入的密碼不一致')
-      return
-    }
-    if (form.password.length < 8) {
-      setError('密碼至少需要 8 個字元')
-      return
-    }
-
     setLoading(true)
-    const { error: authError } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: { data: { name: form.name } },
+    const { error: authError } = await supabase.auth.signInWithOtp({
+      email,
+      options: { data: { name } },
     })
     setLoading(false)
-
     if (authError) {
       setError(authError.message)
     } else {
-      setDone(true)
+      setStep('otp')
     }
   }
 
-  const fields = [
-    { key: 'name',     label: '姓名',     type: 'text',     placeholder: '你的名字' },
-    { key: 'email',    label: '電子郵件', type: 'email',    placeholder: 'name@example.com' },
-    { key: 'password', label: '密碼',     type: 'password', placeholder: '至少 8 個字元' },
-    { key: 'confirm',  label: '確認密碼', type: 'password', placeholder: '再輸入一次密碼' },
-  ]
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    const { error: authError } = await supabase.auth.verifyOtp({ email, token: otp, type: 'email' })
+    setLoading(false)
+    if (authError) {
+      setError('驗證碼錯誤或已過期，請重新確認。')
+    } else {
+      navigate('/my-learning')
+    }
+  }
 
   return (
     <div style={{
@@ -72,73 +66,92 @@ export default function Register() {
             建立你的帳號
           </p>
           <p style={{ fontSize: '14px', color: '#6B6B80', margin: 0 }}>
-            加入 Soking，開始你的 UXR 學習旅程
+            {step === 'form' ? '加入 Soking，開始你的 UXR 學習旅程' : `驗證碼已寄至 ${email}`}
           </p>
         </div>
 
-        {done ? (
-          /* 註冊成功 */
-          <div style={{ textAlign: 'center' }}>
-            <div style={{
-              width: '48px', height: '48px',
-              background: '#E4F7EE',
-              borderRadius: '999px',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              margin: '0 auto 20px',
-            }}>
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M4 11L9 16L18 7" stroke="#1D9E75" strokeWidth="1.8"
-                  strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+        {step === 'form' ? (
+          /* ── Step 1：填寫資料 ── */
+          <form onSubmit={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={labelStyle}>電子郵件</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onFocus={() => setFocus('email')}
+                onBlur={() => setFocus('')}
+                placeholder="name@example.com"
+                required
+                style={inputStyle(focus === 'email')}
+              />
             </div>
-            <p style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E', margin: '0 0 8px' }}>帳號建立成功</p>
-            <p style={{ fontSize: '14px', color: '#6B6B80', margin: '0 0 24px', lineHeight: '1.7' }}>
-              請前往 <strong style={{ color: '#1A1A2E' }}>{form.email}</strong> 收件匣，<br />
-              點擊驗證信中的連結完成認證。
-            </p>
-            <button
-              onClick={() => navigate('/login')}
-              style={primaryBtn}
-              onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
-              onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
-            >
-              前往登入
-            </button>
-          </div>
-        ) : (
-          /* 表單 */
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-            {fields.map(({ key, label, type, placeholder }) => (
-              <div key={key} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <label style={labelStyle}>{label}</label>
-                <input
-                  type={type}
-                  value={form[key]}
-                  onChange={set(key)}
-                  onFocus={() => setFocus(key)}
-                  onBlur={() => setFocus('')}
-                  placeholder={placeholder}
-                  required
-                  style={inputStyle(focus === key)}
-                />
-              </div>
-            ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={labelStyle}>姓名</label>
+              <input
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                onFocus={() => setFocus('name')}
+                onBlur={() => setFocus('')}
+                placeholder="請輸入你的姓名"
+                required
+                style={inputStyle(focus === 'name')}
+              />
+            </div>
 
-            {/* 錯誤訊息 */}
-            {error && (
-              <p style={{ fontSize: '13px', color: '#C04828', margin: 0 }}>{error}</p>
-            )}
+            {error && <p style={{ fontSize: '13px', color: '#C04828', margin: 0 }}>{error}</p>}
 
-            {/* 註冊按鈕 */}
             <button
               type="submit"
               disabled={loading}
-              style={{ ...primaryBtn, marginTop: '4px', opacity: loading ? 0.7 : 1, cursor: loading ? 'default' : 'pointer' }}
+              style={{ ...primaryBtn, opacity: loading ? 0.7 : 1, cursor: loading ? 'default' : 'pointer' }}
               onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#3D34B8' }}
               onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#4A3FD6' }}
             >
-              {loading ? '建立中…' : '建立帳號'}
+              {loading ? '寄送中…' : '開通並發送驗證碼'}
+            </button>
+
+          </form>
+        ) : (
+          /* ── Step 2：輸入驗證碼 ── */
+          <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={labelStyle}>驗證碼</label>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={otp}
+                onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                onFocus={() => setFocus('otp')}
+                onBlur={() => setFocus('')}
+                placeholder="請輸入 6 位數驗證碼"
+                required
+                style={{ ...inputStyle(focus === 'otp'), letterSpacing: '0.1em' }}
+              />
+            </div>
+
+            {error && <p style={{ fontSize: '13px', color: '#C04828', margin: 0 }}>{error}</p>}
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{ ...primaryBtn, opacity: loading ? 0.7 : 1, cursor: loading ? 'default' : 'pointer' }}
+              onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#3D34B8' }}
+              onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#4A3FD6' }}
+            >
+              {loading ? '驗證中…' : '完成註冊'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { setStep('form'); setOtp(''); setError('') }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', color: '#6B6B80', fontFamily: 'inherit', padding: 0 }}
+            >
+              ← 重新填寫資料
             </button>
 
           </form>
@@ -150,7 +163,7 @@ export default function Register() {
         {/* 前往登入 */}
         <p style={{ textAlign: 'center', fontSize: '13px', color: '#6B6B80', margin: 0 }}>
           已經有帳號？{' '}
-          <Link to="/login" style={{ ...linkStyle, fontWeight: '500' }}>立即登入</Link>
+          <Link to="/" style={{ ...linkStyle, fontWeight: '500' }}>返回登入</Link>
         </p>
 
       </div>
