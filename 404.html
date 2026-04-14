@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // GitHub Pages SPA redirect
+      const repo = '/learningCenter'
+      const path = window.location.pathname.replace(repo, '') || '/'
+      window.location.replace(repo + '/?r=' + encodeURIComponent(path))
+    </script>
+  </head>
+  <body></body>
+</html>
