@@ -16,7 +16,7 @@ import UXToolbox from './pages/UXToolbox'
 function App() {
   return (
     <AuthProvider>
-    <BrowserRouter>
+    <BrowserRouter basename="/learningCenter">
       <Routes>
         {/* 公開頁面 */}
         <Route path="/" element={<Welcome />} />
