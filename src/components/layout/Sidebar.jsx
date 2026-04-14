@@ -1,26 +1,24 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { supabase } from '../../lib/supabase'
 
 const baseNavItems = [
   { label: '線上課程', path: '/online-courses' },
   { label: '實戰營',   path: '/bootcamp' },
-  { label: '工作坊',   path: '/workshop' },
-  { label: '小聚活動', path: '/gathering' },
+  { label: '課程活動', path: '/activities' },
   { label: 'UX工具箱', path: '/ux-toolbox' },
 ]
 
 export default function Sidebar() {
-  const { user } = useAuth()
+  const { user, mockLogout } = useAuth()
   const navigate = useNavigate()
   const [settingsOpen, setSettingsOpen] = useState(false)
 
   const firstItem = { label: '我的學習中心', path: user ? '/my-learning' : '/' }
   const navItems = [firstItem, ...baseNavItems]
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
+  const handleLogout = () => {
+    mockLogout()
     setSettingsOpen(false)
     navigate('/')
   }

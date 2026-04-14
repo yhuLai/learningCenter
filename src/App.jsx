@@ -6,10 +6,8 @@ import ForgotPassword from './pages/ForgotPassword'
 import MyLearning from './pages/MyLearning'
 import OnlineCourses from './pages/OnlineCourses'
 import BootCamp from './pages/BootCamp'
-import Workshop from './pages/Workshop'
-import Gathering from './pages/Gathering'
-import CourseDetail from './pages/CourseDetail'
-import Payment from './pages/Payment'
+import CourseActivities from './pages/CourseActivities'
+import ActivityDetail from './pages/ActivityDetail'
 import VideoPlayer from './pages/VideoPlayer'
 import OKRSetup from './pages/OKRSetup'
 import OKRResult from './pages/OKRResult'
@@ -27,15 +25,15 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/okr-setup" element={<OKRSetup />} />
         <Route path="/okr-result" element={<OKRResult />} />
-        <Route path="/courses/:id" element={<CourseDetail />} />
-        <Route path="/payment" element={<Payment />} />
 
         {/* 會員頁面 */}
         <Route path="/my-learning" element={<MyLearning />} />
         <Route path="/online-courses" element={<OnlineCourses />} />
         <Route path="/bootcamp" element={<BootCamp />} />
-        <Route path="/workshop" element={<Workshop />} />
-        <Route path="/gathering" element={<Gathering />} />
+        <Route path="/activities" element={<CourseActivities />} />
+        <Route path="/activities/:id" element={<ActivityDetail />} />
+        <Route path="/workshop" element={<Navigate to="/activities" replace />} />
+        <Route path="/gathering" element={<Navigate to="/activities" replace />} />
         <Route path="/video/:id" element={<VideoPlayer />} />
         <Route path="/ux-toolbox" element={<UXToolbox />} />
 

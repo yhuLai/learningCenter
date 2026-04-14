@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../components/layout/Layout'
+import { upcomingAll } from '../data/activities'
 
 // 暫用 mock 資料，之後串接 Supabase
 const myCourses = [
@@ -12,21 +13,11 @@ const myCourses = [
 
 const COURSE_FILTER_TABS = ['全部', '線上課程', '實戰營']
 
-const recommendedCourses = [
-  { id: 3, title: '問卷設計與分析', type: '線上課程' },
-  { id: 4, title: 'Usability Testing 實戰', type: '實戰營' },
-]
-
-// 已購買課程中即將開始的活動，依日期升冪排列（越近越前）
-const upcomingActivities = [
-  { id: 1, type: '直播',  title: 'UXR 基礎研究方法：研究目的與假設定義', date: '2026-04-10', time: '19:30 – 22:00' },
-  { id: 2, type: '實戰營', title: 'R1 品牌印象調查游擊訪談：第 2 週課程', date: '2026-04-14', time: '19:30 – 22:00' },
-  { id: 3, type: '直播',  title: '使用者訪談實戰示範',                   date: '2026-04-19', time: '10:00 – 12:00' },
-]
-
 const activityTypeStyle = {
   直播:  { background: '#EEF0FD', color: '#4A3FD6' },
   實戰營: { background: '#FEF9E7', color: '#8B7320' },
+  工作坊: { background: '#EEF0FD', color: '#4A3FD6' },
+  小聚:  { background: '#E4F7EE', color: '#0F6E56' },
 }
 
 const card = {
@@ -69,7 +60,7 @@ export default function MyLearning() {
         <div style={{ ...card, marginBottom: '16px', padding: '20px' }}>
           <p style={{ ...sectionLabel, marginBottom: '16px' }}>課程活動</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {upcomingActivities.map(activity => (
+            {upcomingAll.map(activity => (
               <div key={activity.id} style={{
                 background: '#FFFFFF',
                 border: '0.5px solid #E5E5EE',
@@ -104,7 +95,7 @@ export default function MyLearning() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <span style={{
                       ...activityTypeStyle[activity.type],
-                      borderRadius: '999px',
+                      borderRadius: '6px',
                       padding: '4px 12px',
                       fontSize: '12px',
                       fontWeight: '500',
@@ -120,28 +111,48 @@ export default function MyLearning() {
                       {activity.date} &nbsp;·&nbsp; {activity.time}
                     </p>
                   </div>
-                  <a
-                    href="#"
-                    style={{
-                      display: 'inline-block',
-                      background: '#4A3FD6',
-                      color: '#FFFFFF',
-                      border: 'none',
-                      padding: '10px 20px',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      textDecoration: 'none',
-                      whiteSpace: 'nowrap',
-                      transition: 'background 0.15s ease',
-                      flexShrink: 0,
-                      alignSelf: 'flex-start',
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
-                    onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
-                  >
-                    前往觀看
-                  </a>
+                  {activity.type === '實戰營' ? (
+                    <button
+                      disabled
+                      style={{
+                        flexShrink: 0,
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        border: '0.5px solid #C5C5D8',
+                        background: '#F7F7F8',
+                        color: '#9999AA',
+                        cursor: 'not-allowed',
+                        whiteSpace: 'nowrap',
+                        fontFamily: 'inherit',
+                      }}
+                    >
+                      加入直播
+                    </button>
+                  ) : (
+                    <Link
+                      to={`/activities/${activity.id}`}
+                      style={{
+                        display: 'inline-block',
+                        background: '#4A3FD6',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        textDecoration: 'none',
+                        whiteSpace: 'nowrap',
+                        transition: 'background 0.15s ease',
+                        flexShrink: 0,
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
+                      onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
+                    >
+                      查看詳情
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}
@@ -217,7 +228,7 @@ export default function MyLearning() {
                     color: isActive ? '#4A3FD6' : '#6B6B80',
                     background: isActive ? '#EEF0FD' : 'transparent',
                     border: `0.5px solid ${isActive ? '#4A3FD6' : '#E5E5EE'}`,
-                    borderRadius: '999px',
+                    borderRadius: '6px',
                     cursor: 'pointer',
                     fontFamily: "'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
                     transition: 'all 0.15s ease',

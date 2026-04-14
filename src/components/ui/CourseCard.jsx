@@ -41,13 +41,13 @@ const typeTag = {
  *
  * course: {
  *   id, title, stage, free, price?, desc,
- *   ctaLabel?,   // 覆寫 CTA 文字（預設：免費領取 / 查看課程）
- *   linkTo?,     // 覆寫連結路徑（預設：/courses/:id）
+ *   ctaLabel?,   // 覆寫 CTA 文字（預設：查看課程）
+ *   linkTo,      // 連結路徑（必填，無預設）
  * }
  */
 export default function CourseCard({ course }) {
-  const ctaLabel = course.ctaLabel ?? (course.free ? '免費領取' : '查看課程')
-  const linkTo   = course.linkTo   ?? `/courses/${course.id}`
+  const ctaLabel = course.ctaLabel ?? '查看課程'
+  const linkTo   = course.linkTo ?? '#'
 
   return (
     <div style={{
@@ -123,31 +123,40 @@ export default function CourseCard({ course }) {
           </div>
         )}
 
+        {/* 活動日期 */}
+        {course.date && (
+          <p style={{ fontSize: '12px', color: '#6B6B80', margin: 0 }}>
+            {course.date}
+          </p>
+        )}
+
         {/* 價格 + CTA */}
-        <div style={{ marginTop: course.progress !== undefined ? '12px' : 'auto', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: course.hidePrice ? 'flex-end' : 'space-between' }}>
-          {!course.hidePrice && (
-            course.free
-              ? <span style={{ fontSize: '13px', color: '#0F6E56', fontWeight: '500' }}>免費</span>
-              : <span style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E' }}>NT$ {course.price?.toLocaleString()}</span>
-          )}
-          <Link
-            to={linkTo}
-            style={{
-              background: '#4A3FD6',
-              color: '#FFFFFF',
-              padding: '8px 16px',
-              borderRadius: '8px',
-              fontSize: '13px',
-              fontWeight: '500',
-              textDecoration: 'none',
-              transition: 'background 0.15s ease',
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
-            onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
-          >
-            {ctaLabel}
-          </Link>
-        </div>
+        {!course.hideButton && (
+          <div style={{ marginTop: course.progress !== undefined ? '12px' : 'auto', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: course.hidePrice ? 'flex-end' : 'space-between' }}>
+            {!course.hidePrice && (
+              course.free
+                ? <span style={{ fontSize: '13px', color: '#0F6E56', fontWeight: '500' }}>免費</span>
+                : <span style={{ fontSize: '18px', fontWeight: '500', color: '#1A1A2E' }}>NT$ {course.price?.toLocaleString()}</span>
+            )}
+            <Link
+              to={linkTo}
+              style={{
+                background: '#4A3FD6',
+                color: '#FFFFFF',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                fontSize: '13px',
+                fontWeight: '500',
+                textDecoration: 'none',
+                transition: 'background 0.15s ease',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = '#3D34B8'}
+              onMouseLeave={e => e.currentTarget.style.background = '#4A3FD6'}
+            >
+              {ctaLabel}
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )

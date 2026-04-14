@@ -1,27 +1,18 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
 
+// ── Mock 登入模式（暫時關閉 Supabase 驗證）──
+const MOCK_USER = { id: 'mock', email: 'demo@soking.com', user_metadata: { name: '示範用戶' } }
+
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(undefined) // undefined = 載入中
+  const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    // 取得目前 session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-    })
-
-    // 監聽登入/登出變化
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
+  const mockLogin  = () => setUser(MOCK_USER)
+  const mockLogout = () => setUser(null)
 
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, mockLogin, mockLogout }}>
       {children}
     </AuthContext.Provider>
   )
