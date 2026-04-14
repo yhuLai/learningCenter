@@ -58,7 +58,7 @@ export default function MyLearning() {
 
         {/* 課程活動 */}
         <div style={{ ...card, marginBottom: '16px', padding: '20px' }}>
-          <p style={{ ...sectionLabel, marginBottom: '16px' }}>課程活動</p>
+          <p style={{ ...sectionLabel, marginBottom: '16px' }}>即將開始的課程</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {upcomingAll.map(activity => (
               <div key={activity.id} style={{

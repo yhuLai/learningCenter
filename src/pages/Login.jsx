@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 
 export default function Login() {
   const [step, setStep]         = useState('email')   // 'email' | 'otp'
